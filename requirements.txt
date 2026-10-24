@@ -1,5 +1,5 @@
 qiskit==1.2.0
-gym>=0.26
+gymnasium>=0.29
 numpy>=1.24
 networkx>=3.0
 netlsd>=1.0.2

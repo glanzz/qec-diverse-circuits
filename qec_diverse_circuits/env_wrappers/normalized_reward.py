@@ -1,4 +1,4 @@
-import gym
+import gymnasium as gym
 import numpy as np
 from qec_diverse_circuits.env_wrappers.running_std_mean import RunningMeanStd
 
@@ -13,7 +13,7 @@ class NormalizedRewardEnv(gym.Wrapper):
         self.epsilon = 1e-8
 
     def step(self, action):
-        obs, reward, done, info = self.env.step(action)
+        obs, reward, terminated, truncated, info = self.env.step(action)
         obs = self._obfilt(obs)
 
         self.count += 1
@@ -26,13 +26,13 @@ class NormalizedRewardEnv(gym.Wrapper):
         std = (self.running_var + 1e-8) ** 0.5
         normalized_reward = (reward - self.running_mean) / std
 
-        return obs, normalized_reward, done, info
+        return obs, normalized_reward, terminated, truncated, info
 
     def _obfilt(self, obs):
         self.ob_rms.update(obs)
         obs = (obs - self.ob_rms.mean) / np.sqrt(self.ob_rms.var + self.epsilon)
         return obs
 
-    def reset(self):
-        obs = self.env.reset()
-        return self._obfilt(obs)
+    def reset(self, *, seed=None, options=None):
+        obs, info = self.env.reset(seed=seed, options=options)
+        return self._obfilt(obs), info
