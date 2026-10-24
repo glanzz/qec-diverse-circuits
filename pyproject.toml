@@ -7,6 +7,7 @@ name = "qec-diverse-circuits"
 version = "0.1.0"
 description = "A Gymnasium-compatible RL environment that generates quantum circuits diverse in QEC/noise-characterization-relevant properties (non-Clifford content, entangling-gate type/density, connectivity, depth/idle-time)."
 readme = "README.md"
+license = {file = "LICENSE"}
 requires-python = ">=3.10"
 dependencies = [
     "qiskit==1.2.0",
