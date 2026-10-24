@@ -1,6 +1,6 @@
-from gym import Env
+from gymnasium import Env
 import numpy as np
-from gym.spaces import MultiDiscrete, Box
+from gymnasium.spaces import MultiDiscrete, Box
 from time import time
 import netlsd
 
@@ -215,21 +215,21 @@ class DiverseCircuitGenerationEnv(Env):
             observation = self.get_obs()
             self.reset_circuit()
 
-            return observation, reward, False, {}
+            return observation, reward, False, False, {}
 
         if not self.circuit:
             reward = 0
             observation = self.get_obs()
             self.reset_circuit()
 
-            return observation, reward, False, {}
+            return observation, reward, False, False, {}
 
         try:
             self.dag, lastPos = self.GATE_POOL.get_dag(self.circuit)
         except Exception:
             observation = self.get_obs()
             self.reset_circuit()
-            return observation, -5, False, {}
+            return observation, -5, False, False, {}
 
         self.circuit_vector = build_composite_vector(self.dag, self.max_gate_index, self.qubits)
 
@@ -277,9 +277,9 @@ class DiverseCircuitGenerationEnv(Env):
 
             if self.total_explored == self.target_circuits:
                 self.episode_complete = True
-                return observation, reward, True, {}
-            return observation, reward, False, {}
-        return observation, reward, False, {}
+                return observation, reward, True, False, {}
+            return observation, reward, False, False, {}
+        return observation, reward, False, False, {}
 
     def compute_novelty_bonus(self):
         """Graded novelty bonus: continuous in mean distance to nearest
@@ -390,12 +390,13 @@ class DiverseCircuitGenerationEnv(Env):
 
         return np.array(prevobs, dtype=np.float32)
 
-    def reset(self):
+    def reset(self, *, seed=None, options=None):
+        super().reset(seed=seed)
         if self.episode_calls:
             print("Explore success rate", self.total_explored / self.episode_calls)
         self.reset_episode()
 
-        return self.get_obs()
+        return self.get_obs(), {}
 
     def reset_circuit(self):
         self.qubits = None

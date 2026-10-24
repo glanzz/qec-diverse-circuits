@@ -106,9 +106,9 @@ class BaseGenerator:
         self._set_env()
         model = RecurrentPPO.load(os.path.join(model_dir, "model"))
 
-        obs = self.env.reset()
+        obs, info = self.env.reset()
         while True:
             action, _states = model.predict(obs)
-            obs, reward, done, info = self.env.step(action)
-            if done:
+            obs, reward, terminated, truncated, info = self.env.step(action)
+            if terminated or truncated:
                 return list(self.env.all_circuits)
