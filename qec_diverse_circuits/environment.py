@@ -1,3 +1,4 @@
+import zlib
 from gymnasium import Env
 import numpy as np
 from gymnasium.spaces import MultiDiscrete, Box
@@ -50,7 +51,13 @@ def build_composite_vector(dag, max_gate_index, num_qubits):
         node_data = data.get("node_data")
         if node_data is None:
             continue
-        bucket = hash(node_data.name) % GATE_HISTOGRAM_FEATURES_SIZE
+        # Python's built-in hash() randomizes string hashing per process
+        # (PYTHONHASHSEED), so two separate runs can bucket the same gate
+        # name differently -- silently corrupting novelty-archive distance
+        # comparisons between vectors computed in different processes (e.g.
+        # a saved archive from training vs. a later generate() call). zlib's
+        # crc32 is deterministic across processes and Python versions.
+        bucket = zlib.crc32(node_data.name.encode("utf-8")) % GATE_HISTOGRAM_FEATURES_SIZE
         histogram[bucket] += 1.0
         for p in (node_data.params or []):
             if isinstance(p, (int, float)) and np.isfinite(p):
