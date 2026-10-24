@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qec-diverse-circuits"
+version = "0.1.0"
+description = "A Gymnasium-compatible RL environment that generates quantum circuits diverse in QEC/noise-characterization-relevant properties (non-Clifford content, entangling-gate type/density, connectivity, depth/idle-time)."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "qiskit==1.2.0",
+    "gym>=0.26",
+    "numpy>=1.24",
+    "networkx>=3.0",
+    "netlsd>=1.0.2",
+    "stable-baselines3>=2.0",
+    "sb3-contrib>=2.0",
+    "torch>=2.0",
+    "tensorboard>=2.14",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+include = ["qec_diverse_circuits*"]
