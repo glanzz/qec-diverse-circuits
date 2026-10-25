@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=65.0"]
+requires = ["setuptools>=65.0", "setuptools-scm>=8.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "qec-diverse-circuits"
-version = "0.1.0"
+dynamic = ["version"]
 description = "A Gymnasium-compatible RL environment that generates quantum circuits diverse in QEC/noise-characterization-relevant properties (non-Clifford content, entangling-gate type/density, connectivity, depth/idle-time)."
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -26,3 +26,10 @@ dev = ["pytest>=7.0"]
 
 [tool.setuptools.packages.find]
 include = ["qec_diverse_circuits*"]
+
+[tool.setuptools_scm]
+version_file = "qec_diverse_circuits/_version.py"
+# Before the first `v*` tag exists, setuptools-scm falls back to a
+# 0.1.dev<N>+g<hash> style version derived from commit count -- this is
+# expected and harmless for editable/dev installs; a real version appears
+# once the first `vX.Y.Z` tag is pushed.

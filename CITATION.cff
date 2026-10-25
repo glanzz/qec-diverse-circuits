@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "qec-diverse-circuits: A Gymnasium environment for generating QEC-property-diverse quantum circuits"
+version: 0.1.0
+date-released: "2026-10-24"
+license: MIT
+repository-code: "https://github.com/glanzz/qec-diverse-circuits"
+type: software
+authors:
+  - family-names: "Chickmagalur Nanjundappa"
+    given-names: "Bhargav"
+keywords:
+  - reinforcement-learning
+  - quantum-computing
+  - quantum-error-correction
+  - gymnasium
+  - qiskit
