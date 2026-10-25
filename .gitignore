@@ -8,3 +8,4 @@ models/
 *.egg-info
 dist/
 build/
+qec_diverse_circuits/_version.py

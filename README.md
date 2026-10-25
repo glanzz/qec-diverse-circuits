@@ -18,6 +18,12 @@ Validated on N=1000 generated circuits: the trained agent correlates with these 
 ## Install
 
 ```bash
+pip install qec-diverse-circuits
+```
+
+For local development:
+
+```bash
 pip install -e .
 ```
 
@@ -54,6 +60,14 @@ No pretrained checkpoint is published yet — `generate()` trains one from scrat
 ```bash
 pytest tests/
 ```
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md). This project follows [Semantic Versioning](https://semver.org/).
+
+## Citation
+
+If you use this package in research, please cite it — see [CITATION.cff](CITATION.cff).
 
 ## License
 
