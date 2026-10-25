@@ -5,8 +5,32 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: read
+
 jobs:
+  verify-tag-on-main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify tagged commit is on main
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::Tagged commit $GITHUB_SHA is not on main -- refusing to publish a release built from an unmerged/unreviewed commit"
+            exit 1
+          fi
+
+  test:
+    needs: verify-tag-on-main
+    uses: ./.github/workflows/tests.yml
+
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,6 +39,7 @@ jobs:
           # shallow clone (the default) has no tags and would silently
           # produce a bogus 0.1.dev0 version for every release.
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -60,5 +85,7 @@ jobs:
           name: dist
           path: dist/
 
+      # TODO: pin to a full commit SHA once verified (see PR discussion) --
+      # e.g. `pypa/gh-action-pypi-publish@<40-char-sha> # v1.x.x`.
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
