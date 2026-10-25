@@ -85,7 +85,5 @@ jobs:
           name: dist
           path: dist/
 
-      # TODO: pin to a full commit SHA once verified (see PR discussion) --
-      # e.g. `pypa/gh-action-pypi-publish@<40-char-sha> # v1.x.x`.
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
